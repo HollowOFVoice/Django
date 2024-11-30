@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'todo/styles.css' %}"> <!-- Подключите свой файл стилей -->
+</head>
+<body>
+    <div class="container">
+        <h1>Авторизация</h1>
+
+        <!-- Форма для авторизации -->
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+<!--    По видимому, все эти тайп, айди и прочее используются как для css так и для views-->
+<!--    Ибо в этом файле есть Обращение к методу данной формы POST, а в required, что ниже написан -->
+<!--    Как раз таки содержит  в себе данные что мы вводим в форму, и уже операясь на них,-->
+<!--    В файле views происходит запросы в бд и прочие моменты связанные с обработкой и работой с данными-->
+                <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+            </div>
+            <button type="submit">Войти</button>
+        </form>
+
+        <!-- Отображение ошибок -->
+        {% if error %}
+            <div class="error-message">
+                <p>{{ error }}</p>
+            </div>
+        {% endif %}
+
+<!-- Удалите или закомментируйте следующую строку -->
+<p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
+
+    </div>
+</body>
+</html>

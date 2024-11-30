@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'todo/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+
+        <!-- Форма для добавления новой задачи -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="task_title" placeholder="Добавить новую задачу" required>
+            <button type="submit">Добавить</button>
+        </form>
+
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="task-item {% if task.completed %}completed{% endif %}">
+                    <span>{{ task.title }}</span>
+                    <div class="task-actions">
+                        <form method="POST" action="{% url 'delete_task' task.id %}" onsubmit="return confirm('Вы уверены, что хотите удалить эту задачу?');">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">Удалить</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {% if not tasks %}
+            <p>Нет задач для отображения.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
